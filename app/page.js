@@ -1,7 +1,5 @@
 'use client';
 
-// home page with marketing content
-
 import { useState, useEffect } from 'react';
 import { Zap, Shield, BarChart3, ArrowRight, CheckCircle, Star, Globe, Lock, Rocket, Users, TrendingUp, Cpu } from 'lucide-react';
 import Navbar from '@/components/Navbar';
@@ -14,22 +12,6 @@ export default function LandingPage() {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Feature carousel auto-rotate
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentFeature((prev) => (prev + 1) % features.length);
-    }, 4000);
-    return () => clearInterval(interval);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const stats = [
-    { number: '10M+', label: 'Links Shortened' },
-    { number: '500K+', label: 'Active Users' },
-    { number: '99.9%', label: 'Uptime' },
-    { number: '150+', label: 'Countries' },
-  ];
 
   const features = [
     {
@@ -60,6 +42,21 @@ export default function LandingPage() {
       color: "from-purple-500 to-pink-500",
       bgColor: "bg-purple-500/10"
     }
+  ];
+
+  // Feature carousel auto-rotate
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentFeature((prev) => (prev + 1) % features.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [features.length]);
+
+  const stats = [
+    { number: '10M+', label: 'Links Shortened' },
+    { number: '500K+', label: 'Active Users' },
+    { number: '99.9%', label: 'Uptime' },
+    { number: '150+', label: 'Countries' },
   ];
 
   const testimonials = [
@@ -152,12 +149,10 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors duration-300">
-      {/* Navbar */}
-
+      <Navbar />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
-        {/* Background Gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-blue-50 via-white to-indigo-50 dark:from-gray-900 dark:via-gray-900 dark:to-blue-900/20" />
 
         {/* Animated Background Elements */}
@@ -175,7 +170,6 @@ export default function LandingPage() {
               Trusted by 500,000+ businesses worldwide
             </div>
 
-            {/* Main Heading */}
             <h1 className="text-5xl md:text-7xl font-bold mb-6">
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400">
                 Short Links,
@@ -186,7 +180,6 @@ export default function LandingPage() {
               </span>
             </h1>
 
-            {/* Subheading */}
             <p className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
               Transform long URLs into powerful, trackable short links that drive engagement,
               deliver insights, and boost your marketing ROI. Enterprise-grade features,
@@ -210,20 +203,6 @@ export default function LandingPage() {
                 </span>
               </button>
             </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-2xl mx-auto">
-              {stats.map((stat, index) => (
-                <div key={index} className="text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-1">
-                    {stat.number}
-                  </div>
-                  <div className="text-sm text-gray-600 dark:text-gray-400">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </section>
@@ -243,7 +222,6 @@ export default function LandingPage() {
           {/* Feature Showcase */}
           <div className="max-w-6xl mx-auto">
             <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Feature Content */}
               <div>
                 <div className="space-y-8">
                   {features.map((feature, index) => (
@@ -275,7 +253,6 @@ export default function LandingPage() {
                 </div>
               </div>
 
-              {/* Feature Visual */}
               <div className="relative">
                 <div className="relative h-96 bg-gradient-to-br from-blue-500 to-purple-600 rounded-3xl shadow-2xl overflow-hidden">
                   <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:60px_60px]" />
@@ -335,7 +312,7 @@ export default function LandingPage() {
                   </div>
                 </div>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed">
-                  "{testimonial.content}"
+                  {testimonial.content}
                 </p>
                 <div className="flex mt-4">
                   {[...Array(5)].map((_, i) => (
@@ -348,104 +325,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <section id="pricing" className="py-24 bg-gray-50 dark:bg-gray-800/50">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-              Simple, Transparent Pricing
-            </h2>
-            <p className="text-xl text-gray-600 dark:text-gray-300">
-              Start free, upgrade as you grow. No hidden fees, no surprises.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {pricingPlans.map((plan, index) => (
-              <div
-                key={index}
-                className={`relative rounded-3xl p-8 transition-all duration-300 hover:scale-105 ${plan.popular
-                  ? 'bg-gradient-to-b from-blue-600 to-purple-600 text-white shadow-2xl border-2 border-blue-500/20'
-                  : 'bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-lg border border-gray-200 dark:border-gray-700'
-                  }`}
-              >
-                {plan.popular && (
-                  <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-                    <span className="bg-gradient-to-r from-yellow-400 to-orange-500 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                      Most Popular
-                    </span>
-                  </div>
-                )}
-
-                <h3 className={`text-2xl font-bold mb-2 ${plan.popular ? 'text-white' : ''}`}>
-                  {plan.name}
-                </h3>
-                <div className="mb-4">
-                  <span className="text-4xl font-bold">{plan.price}</span>
-                  {plan.period !== 'forever' && (
-                    <span className={plan.popular ? 'text-blue-100' : 'text-gray-600 dark:text-gray-400'}>
-                      /{plan.period}
-                    </span>
-                  )}
-                </div>
-                <p className={plan.popular ? 'text-blue-100 mb-6' : 'text-gray-600 dark:text-gray-400 mb-6'}>
-                  {plan.description}
-                </p>
-
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((feature, featureIndex) => (
-                    <li key={featureIndex} className="flex items-center">
-                      <CheckCircle
-                        className={`w-5 h-5 mr-3 ${plan.popular ? 'text-green-300' : 'text-green-500'
-                          }`}
-                      />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-
-                <button
-                  className={`w-full py-4 rounded-xl font-semibold transition-all duration-300 ${plan.popular
-                    ? 'bg-white text-blue-600 hover:bg-gray-100 hover:shadow-lg'
-                    : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white hover:shadow-lg'
-                    }`}
-                >
-                  {plan.cta}
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="py-24 bg-gradient-to-r from-blue-600 to-purple-600">
-        <div className="container mx-auto px-6">
-          <div className="max-w-4xl mx-auto text-center text-white">
-            <Rocket className="w-16 h-16 mx-auto mb-6 opacity-90" />
-            <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              Ready to Transform Your Links?
-            </h2>
-            <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-              Join thousands of businesses already using Shortly to optimize their link management and drive better results.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg hover:shadow-xl">
-                Start Free 14-Day Trial
-              </button>
-              <button className="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold text-lg hover:bg-white/10 transition-colors">
-                Schedule a Demo
-              </button>
-            </div>
-            <p className="mt-4 text-blue-200 text-sm">
-              No credit card required • Cancel anytime
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-
+      <Footer />
     </div>
   );
 }
