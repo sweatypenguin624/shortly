@@ -1,8 +1,7 @@
 'use client';
 
-// navbar component
-
 import { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { Link2, Sun, Moon, Menu, X, ChevronDown } from 'lucide-react';
 
 /**
@@ -21,8 +20,10 @@ export default function Navbar({ onThemeChange, className = '' }) {
 
     useEffect(() => {
         setMounted(true);
-        const isDark = localStorage.getItem('darkMode') === 'true' ||
-            (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        const isDark =
+            localStorage.getItem('darkMode') === 'true' ||
+            (!('darkMode' in localStorage) &&
+                window.matchMedia('(prefers-color-scheme: dark)').matches);
         setDarkMode(isDark);
     }, []);
 
@@ -41,35 +42,19 @@ export default function Navbar({ onThemeChange, className = '' }) {
     const navigation = [
         { name: 'Features', href: '#features' },
         { name: 'Shorten', href: '/shorten' },
-        // {
-        //     name: 'Solutions',
-        //     href: '#',
-        //     dropdown: [
-        //         { name: 'Marketing', href: '#' },
-        //         { name: 'Social Media', href: '#' },
-        //         { name: 'E-commerce', href: '#' },
-        //         { name: 'Enterprise', href: '#' },
-        //     ]
-        // },
         { name: 'API', href: '#' },
         { name: 'Documentation', href: '#' },
     ];
 
-    const toggleDarkMode = () => {
-        setDarkMode(!darkMode);
-    };
-
-    const toggleMobileMenu = () => {
-        setMobileMenuOpen(!mobileMenuOpen);
-    };
-
-    const closeMobileMenu = () => {
-        setMobileMenuOpen(false);
-    };
+    const toggleDarkMode = () => setDarkMode(!darkMode);
+    const toggleMobileMenu = () => setMobileMenuOpen(!mobileMenuOpen);
+    const closeMobileMenu = () => setMobileMenuOpen(false);
 
     if (!mounted) {
         return (
-            <nav className={`bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 ${className}`}>
+            <nav
+                className={`bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 ${className}`}
+            >
                 <div className="container mx-auto px-6">
                     <div className="flex items-center justify-between h-16">
                         <div className="animate-pulse h-8 bg-gray-300 dark:bg-gray-700 rounded w-32"></div>
@@ -81,16 +66,18 @@ export default function Navbar({ onThemeChange, className = '' }) {
 
     return (
         <>
-            <nav className={`bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 ${className}`}>
+            <nav
+                className={`bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border-b border-gray-200 dark:border-gray-800 sticky top-0 z-50 ${className}`}
+            >
                 <div className="container mx-auto px-6">
                     <div className="flex items-center justify-between h-16">
                         {/* Logo */}
-                        <a href="/" className="flex items-center space-x-3">
+                        <Link href="/" className="flex items-center space-x-3">
                             <Link2 className="w-8 h-8 text-blue-500" />
                             <span className="text-2xl font-bold text-gray-900 dark:text-white">
                                 Shortly
                             </span>
-                        </a>
+                        </Link>
 
                         {/* Desktop Navigation */}
                         <div className="hidden md:flex items-center space-x-8">
@@ -104,23 +91,20 @@ export default function Navbar({ onThemeChange, className = '' }) {
                                             </button>
                                             <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-1 z-50">
                                                 {item.dropdown.map((dropdownItem) => (
-                                                    <a
-                                                        key={dropdownItem.name}
-                                                        href={dropdownItem.href}
-                                                        className="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg transition-colors"
-                                                    >
-                                                        {dropdownItem.name}
-                                                    </a>
+                                                    <Link key={dropdownItem.name} href={dropdownItem.href}>
+                                                        <a className="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg transition-colors">
+                                                            {dropdownItem.name}
+                                                        </a>
+                                                    </Link>
                                                 ))}
                                             </div>
                                         </>
                                     ) : (
-                                        <a
-                                            href={item.href}
-                                            className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
-                                        >
-                                            {item.name}
-                                        </a>
+                                        <Link href={item.href}>
+                                            <a className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium">
+                                                {item.name}
+                                            </a>
+                                        </Link>
                                     )}
                                 </div>
                             ))}
@@ -136,19 +120,17 @@ export default function Navbar({ onThemeChange, className = '' }) {
                                 {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                             </button>
 
-                            <a
-                                href="#"
-                                className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
-                            >
-                                Sign In
-                            </a>
+                            <Link href="/signin">
+                                <a className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium">
+                                    Sign In
+                                </a>
+                            </Link>
 
-                            <a
-                                href="#"
-                                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors shadow-lg hover:shadow-xl"
-                            >
-                                Get Started Free
-                            </a>
+                            <Link href="/get-started">
+                                <a className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors shadow-lg hover:shadow-xl">
+                                    Get Started Free
+                                </a>
+                            </Link>
                         </div>
 
                         {/* Mobile Menu Button */}
@@ -186,44 +168,47 @@ export default function Navbar({ onThemeChange, className = '' }) {
                                                 </div>
                                                 <div className="pl-4 space-y-2 border-l-2 border-gray-200 dark:border-gray-700">
                                                     {item.dropdown.map((dropdownItem) => (
-                                                        <a
-                                                            key={dropdownItem.name}
-                                                            href={dropdownItem.href}
-                                                            className="block py-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                                                            onClick={closeMobileMenu}
-                                                        >
-                                                            {dropdownItem.name}
-                                                        </a>
+                                                        <Link key={dropdownItem.name} href={dropdownItem.href}>
+                                                            <a
+                                                                className="block py-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
+                                                                onClick={closeMobileMenu}
+                                                            >
+                                                                {dropdownItem.name}
+                                                            </a>
+                                                        </Link>
                                                     ))}
                                                 </div>
                                             </div>
                                         ) : (
-                                            <a
-                                                href={item.href}
-                                                className="block py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
-                                                onClick={closeMobileMenu}
-                                            >
-                                                {item.name}
-                                            </a>
+                                            <Link href={item.href}>
+                                                <a
+                                                    className="block py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+                                                    onClick={closeMobileMenu}
+                                                >
+                                                    {item.name}
+                                                </a>
+                                            </Link>
                                         )}
                                     </div>
                                 ))}
 
                                 <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
-                                    <a
-                                        href="#"
-                                        className="block w-full text-center py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
-                                        onClick={closeMobileMenu}
-                                    >
-                                        Sign In
-                                    </a>
-                                    <a
-                                        href="#"
-                                        className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition-colors shadow-lg"
-                                        onClick={closeMobileMenu}
-                                    >
-                                        Get Started Free
-                                    </a>
+                                    <Link href="/signin">
+                                        <a
+                                            className="block w-full text-center py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+                                            onClick={closeMobileMenu}
+                                        >
+                                            Sign In
+                                        </a>
+                                    </Link>
+                                    <Link href="/get-started">
+                                        <a
+                                            className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition-colors shadow-lg"
+                                            onClick={closeMobileMenu}
+                                        >
+                                            Get Started Free
+                                        </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>
