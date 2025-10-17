@@ -1,7 +1,6 @@
 import { redirect } from "next/navigation";
 import clientPromise from "@/lib/mongodb";
 
-// Optional: simple 404 page component
 function NotFound({ shorturl }) {
     return (
         <div style={{ textAlign: "center", marginTop: "50px" }}>
@@ -15,30 +14,32 @@ function NotFound({ shorturl }) {
 export default async function Page({ params }) {
     const { shorturl } = params;
 
-    // Redirect home if no shorturl is provided
     if (!shorturl) {
         redirect(process.env.NEXT_PUBLIC_HOST || "/");
     }
 
+    // Normalize shorturl (remove slashes and trim)
+    const cleanShorturl = shorturl.replace(/\//g, "").trim();
+
+    let doc;
     try {
-        // Connect to MongoDB
         const client = await clientPromise;
         const db = client.db("bitlinks");
         const collection = db.collection("url");
-
-        // Find the document by shorturl
-        const doc = await collection.findOne({ shorturl: shorturl.trim() });
-
-        if (doc?.url) {
-            // URL found → redirect
-            redirect(doc.url.trim());
-        } else {
-            // Short URL not found → render 404 page
-            return <NotFound shorturl={shorturl} />;
-        }
+        doc = await collection.findOne({ shorturl: cleanShorturl });
     } catch (error) {
         console.error("❌ MongoDB error:", error);
-        // On DB error → redirect home
         redirect(process.env.NEXT_PUBLIC_HOST || "/");
+    }
+
+    if (doc?.url) {
+        // Ensure full URL with protocol
+        let target = doc.url.trim();
+        if (!/^https?:\/\//i.test(target)) {
+            target = "https://" + target;
+        }
+        redirect(target);
+    } else {
+        return <NotFound shorturl={cleanShorturl} />;
     }
 }
