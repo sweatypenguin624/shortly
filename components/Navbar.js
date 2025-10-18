@@ -3,6 +3,13 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Link2, Sun, Moon, Menu, X, ChevronDown } from 'lucide-react';
+import {
+    SignedIn,
+    SignedOut,
+    SignInButton,
+    SignUpButton,
+    UserButton,
+} from '@clerk/nextjs';
 
 /**
  * @typedef {Object} NavbarProps
@@ -91,19 +98,22 @@ export default function Navbar({ onThemeChange, className = '' }) {
                                             </button>
                                             <div className="absolute top-full left-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform group-hover:translate-y-0 translate-y-1 z-50">
                                                 {item.dropdown.map((dropdownItem) => (
-                                                    <Link key={dropdownItem.name} href={dropdownItem.href}>
-                                                        <a className="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg transition-colors">
-                                                            {dropdownItem.name}
-                                                        </a>
+                                                    <Link
+                                                        className="block px-4 py-3 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg transition-colors"
+                                                        key={dropdownItem.name}
+                                                        href={dropdownItem.href}
+                                                    >
+                                                        {dropdownItem.name}
                                                     </Link>
                                                 ))}
                                             </div>
                                         </>
                                     ) : (
-                                        <Link href={item.href}>
-                                            <a className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium">
-                                                {item.name}
-                                            </a>
+                                        <Link
+                                            className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+                                            href={item.href}
+                                        >
+                                            {item.name}
                                         </Link>
                                     )}
                                 </div>
@@ -120,17 +130,23 @@ export default function Navbar({ onThemeChange, className = '' }) {
                                 {darkMode ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
                             </button>
 
-                            <Link href="/signin">
-                                <a className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium">
-                                    Sign In
-                                </a>
-                            </Link>
+                            {/* Clerk Auth Buttons */}
+                            <SignedOut>
+                                <SignInButton mode="modal">
+                                    <button className="text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium">
+                                        Sign In
+                                    </button>
+                                </SignInButton>
+                                <SignUpButton mode="modal">
+                                    <button className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors shadow-lg hover:shadow-xl">
+                                        Get Started Free
+                                    </button>
+                                </SignUpButton>
+                            </SignedOut>
 
-                            <Link href="/get-started">
-                                <a className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors shadow-lg hover:shadow-xl">
-                                    Get Started Free
-                                </a>
-                            </Link>
+                            <SignedIn>
+                                <UserButton afterSignOutUrl="/" />
+                            </SignedIn>
                         </div>
 
                         {/* Mobile Menu Button */}
@@ -168,47 +184,51 @@ export default function Navbar({ onThemeChange, className = '' }) {
                                                 </div>
                                                 <div className="pl-4 space-y-2 border-l-2 border-gray-200 dark:border-gray-700">
                                                     {item.dropdown.map((dropdownItem) => (
-                                                        <Link key={dropdownItem.name} href={dropdownItem.href}>
-                                                            <a
-                                                                className="block py-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
-                                                                onClick={closeMobileMenu}
-                                                            >
-                                                                {dropdownItem.name}
-                                                            </a>
+                                                        <Link onClick={closeMobileMenu} className="block py-2 text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" key={dropdownItem.name} href={dropdownItem.href}>
+
+                                                            {dropdownItem.name}
+
                                                         </Link>
                                                     ))}
                                                 </div>
                                             </div>
                                         ) : (
-                                            <Link href={item.href}>
-                                                <a
-                                                    className="block py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
-                                                    onClick={closeMobileMenu}
-                                                >
-                                                    {item.name}
-                                                </a>
+                                            <Link className="block py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+                                                onClick={closeMobileMenu} href={item.href}>
+
+                                                {item.name}
+
                                             </Link>
                                         )}
                                     </div>
                                 ))}
 
+                                {/* Clerk Buttons in Mobile Menu */}
                                 <div className="pt-4 border-t border-gray-200 dark:border-gray-700 space-y-3">
-                                    <Link href="/signin">
-                                        <a
-                                            className="block w-full text-center py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
-                                            onClick={closeMobileMenu}
-                                        >
-                                            Sign In
-                                        </a>
-                                    </Link>
-                                    <Link href="/get-started">
-                                        <a
-                                            className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition-colors shadow-lg"
-                                            onClick={closeMobileMenu}
-                                        >
-                                            Get Started Free
-                                        </a>
-                                    </Link>
+                                    <SignedOut>
+                                        <SignInButton mode="modal">
+                                            <button
+                                                className="block w-full text-center py-2 text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors font-medium"
+                                                onClick={closeMobileMenu}
+                                            >
+                                                Sign In
+                                            </button>
+                                        </SignInButton>
+                                        <SignUpButton mode="modal">
+                                            <button
+                                                className="block w-full text-center bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg font-medium transition-colors shadow-lg"
+                                                onClick={closeMobileMenu}
+                                            >
+                                                Get Started Free
+                                            </button>
+                                        </SignUpButton>
+                                    </SignedOut>
+
+                                    <SignedIn>
+                                        <div className="flex justify-center py-3">
+                                            <UserButton afterSignOutUrl="/" />
+                                        </div>
+                                    </SignedIn>
                                 </div>
                             </div>
                         </div>

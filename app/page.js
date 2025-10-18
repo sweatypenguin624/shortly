@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { Zap, Shield, BarChart3, ArrowRight, CheckCircle, Star, Globe, Lock, Rocket, Users, TrendingUp, Cpu } from 'lucide-react';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+// import Navbar from '@/components/Navbar';
+// import Footer from '@/components/Footer';
 
 export default function LandingPage() {
   const [mounted, setMounted] = useState(false);
@@ -139,7 +139,7 @@ export default function LandingPage() {
   if (!mounted) {
     return (
       <div className="min-h-screen flex flex-col">
-        <Navbar />
+        {/* <Navbar /> */}
         <main className="flex-1 flex items-center justify-center">
           <div className="animate-pulse text-lg">Loading...</div>
         </main>
@@ -149,7 +149,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white dark:bg-gray-900 transition-colors duration-300">
-      <Navbar />
+      {/* <Navbar /> */}
 
       {/* Hero Section */}
       <section className="relative overflow-hidden">
@@ -325,7 +325,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
