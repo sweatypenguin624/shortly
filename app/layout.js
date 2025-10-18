@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
+import { Toaster } from "react-hot-toast";
 
 import { ClerkProvider } from "@clerk/nextjs";
 
@@ -29,6 +30,7 @@ export default function RootLayout({ children }) {
           <Navbar />
 
           <main>{children}</main>
+          <Toaster position="top-center" reverseOrder={false} />
 
           {/* Optional Footer */}
           <Footer />
